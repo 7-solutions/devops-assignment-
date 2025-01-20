@@ -1,0 +1,9 @@
+resources:
+  - ../../base/deployment.yaml
+
+images:
+  - name: ijustwannahigh/sample-go-app
+    newTag: v1.0.0
+
+patchesStrategicMerge:
+  - replicas.yaml

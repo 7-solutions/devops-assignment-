@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-go-app
+  labels:
+    app: sample-go-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample-go-app
+  template:
+    metadata:
+      labels:
+        app: sample-go-app
+    spec:
+      containers:
+        - name: sample-go-app
+          image: ijustwannahigh/sample-go-app:latest
+          ports:
+            - containerPort: 8080
