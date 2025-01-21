@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sample-go-app
+  namespance: default
   labels:
     app: sample-go-app
 spec:
@@ -14,8 +15,30 @@ spec:
       labels:
         app: sample-go-app
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: sample-go-app
           image: ijustwannahigh/sample-go-app:latest
           ports:
             - containerPort: 8080
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+            readinessProbe:
+              httpGet:
+                path: /
+                port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 10
+              failureThreshold: 3
+            capabilities:
+              drop:
+                - NET_RAW
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: '128Mi'
+            limits:
+              memory: '256Mi'

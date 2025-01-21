@@ -2,5 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sample-go-app
+  namespance: default
 spec:
   replicas: 3
+  template:
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: sample-go-app
+          image: ijustwannahigh/sample-go-app:latest
+          ports:
+            - containerPort: 8080

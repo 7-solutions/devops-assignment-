@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-go-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/<username>/sample-go-app.git
+    path: kustomize/overlays/production
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
