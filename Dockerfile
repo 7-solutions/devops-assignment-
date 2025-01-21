@@ -14,14 +14,22 @@ COPY . .
 
 RUN go build -o main .
 
-FROM alpine:latest
+FROM alpine:3.21.2
 
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add ca-certificates=20241121-r1 \
+    && addgroup -S appgroup \
+    && adduser -S appuser -G appgroup
 
-WORKDIR /root/
+WORKDIR /home/appuser/
 
 COPY --from=builder /app/main .
 
+RUN chown -R appuser:appgroup /home/appuser
+
+USER appuser
+
 EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8080/ || exit 1
 
 CMD ["./main"]
