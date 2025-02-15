@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-app
+  labels:
+    app: devops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops
+  template:
+    metadata:
+      labels:
+        app: devops
+    spec:
+      containers:
+        - name: devops-app
+          image: kobzoom168/devops-app:latest
+          ports:
+            - containerPort: 80
